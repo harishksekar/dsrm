@@ -5,4 +5,10 @@ class Memory_Utilization(object):
     def get_memory_info(self):
         import psutil
         mem_info = psutil.virtual_memory()
-        return mem_info
+        return {
+            "total": mem_info.total,
+            "available": mem_info.available,
+            "percent": mem_info.percent,
+            "used": mem_info.used,
+            "free": mem_info.free
+        }

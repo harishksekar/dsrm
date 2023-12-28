@@ -25,12 +25,18 @@ class Node(object):
 
     def communicate(self):
         while True:
+            print ("Ready to accept...")
             comm_socket, address = self.admin.accept()
             msg = comm_socket.recv(1024).decode('utf-8')
             # print ("Received message from client {}: {}".format(address, msg))
             # comm_socket.send("Msg from server".encode('utf-8'))
+            metrics = {}
             if msg == "get_metrics":
-                comm_socket.send(self.disk_utils.get_disk_info().encode('utf-8'))
+                metrics["disk"] = self.disk_utils.get_disk_info()
+                metrics["memory"] = self.mem_utils.get_memory_info()
+                metrics = str(metrics)
+
+                comm_socket.send(metrics.encode('utf-8'))
             comm_socket.close()
 
 def main():
