@@ -1,10 +1,10 @@
-import socket
+import socket, json, ast
 
 HOST = socket.gethostbyname(socket.gethostname())
 PORT = 9191
 client = None
 
-def setup_client():
+def connect_to_node():
     global client
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     try:
@@ -15,10 +15,13 @@ def setup_client():
     return True
 
 def main():
-    global server
-    if setup_client():
-        client.send("Hello from client boss!!".encode('utf-8'))
-        print ("Message sent successfully!")
+    if connect_to_node():
+        client.send("get_metrics".encode('utf-8'))
+        msg = client.recv(1024).decode('utf-8')
+        # print ("msg = {}, type = {}".format(msg, type(msg)))
+        metrics = ast.literal_eval(json.dumps(msg))
+        print (metrics)
+        # print ("Message sent successfully!")
 
 if __name__ == '__main__':
     try:

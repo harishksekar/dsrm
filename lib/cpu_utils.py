@@ -1,6 +1,3 @@
-import os, sys, subprocess, re
-from subprocess import PIPE, Popen
-
 class CPU_Utilization(object):
 	def __init__(self):
 		pass
