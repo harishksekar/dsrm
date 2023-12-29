@@ -16,8 +16,9 @@ class NodeServer(object):
         self.disk_utilz = DiskUtilization()
         self.cpu_utilz = CPU_Utilization()
         self.mem_utilz = Memory_Utilization()
+        self.request_id = 0
         # print (self.mem_utilz.get_memory_info())
-        print (self.cpu_utilz.get_cpu_info())
+        # print (self.cpu_utilz.get_cpu_info())
         # print (self.disk_utilz.get_disk_info())
 
     def connect_to_admin(self):
@@ -31,9 +32,11 @@ class NodeServer(object):
         self.admin.listen(5) # 5 = maximum number of clients it can talk to, at a time
 
     def communicate(self):
+        print ("Node server ready to communicate...")
         while True:
-            print ("Ready to accept...")
             comm_socket, address = self.admin.accept()
+            print ("[Request ID: {:3} - Connection from {}".format(self.request_id, address))
+            self.request_id += 1
             msg = comm_socket.recv(1024).decode('utf-8')
             # print ("Received message from client {}: {}".format(address, msg))
             # comm_socket.send("Msg from server".encode('utf-8'))
