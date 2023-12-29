@@ -8,7 +8,7 @@ from lib.mem_utils import Memory_Utilization
 
 server = None
 
-class Node(object):
+class NodeServer(object):
     def __init__(self, host, port):
         self.host = host
         self.port = port
@@ -52,7 +52,7 @@ def main():
     parser.add_argument('--port', action="store", dest="port", type=int, default=9191,
                         help="Port to run node server on")
     args = parser.parse_args()
-    node = Node(host=socket.gethostbyname(socket.gethostname()),
+    node = NodeServer(host=socket.gethostbyname(socket.gethostname()),
                 port=args.port)
     return node.communicate()
 
