@@ -1,10 +1,22 @@
 import os
 import time
+import atexit
 
 def stress_disk(directory, file_size_MB):
     os.makedirs(directory, exist_ok=True)
     total_bytes = file_size_MB * 1024 * 1024 
     created_files = []
+
+    def cleanup():
+        print("\nRemoving temporary files...")
+        for file in created_files:
+            try:
+                os.remove(file)
+            except Exception as e:
+                print(f"Error removing file {file}: {e}")
+        print("Temporary files removed.")
+
+    atexit.register(cleanup)
 
     try:
         while True:
@@ -14,9 +26,7 @@ def stress_disk(directory, file_size_MB):
             created_files.append(filename)
 
     except KeyboardInterrupt:
-        for file in created_files:
-            os.remove(file)
-        print("Temporary files removed.")
+        pass
 
 if __name__ == "__main__":
     directory = "disk_stress_test"  
